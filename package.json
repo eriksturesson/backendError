@@ -1,0 +1,55 @@
+{
+  "name": "@eriksturesson/backend-error",
+  "license": "MIT",
+  "maintainers": [
+    "Erik Sturesson"
+  ],
+  "author": {
+    "name": "Erik Sturesson",
+    "email": "hej@eriksturesson.se",
+    "url": "https://eriksturesson.se"
+  },
+  "version": "0.0.1",
+  "description": "Logger library supporting multiple cloud platforms with simple error handling.",
+  "keywords": [
+    "error",
+    "fail",
+    "drawing",
+    "drawings",
+    "summarized",
+    "help",
+    "fun"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eriksturesson/backendError"
+  },
+  "bugs": {
+    "email": "hej@eriksturesson.se",
+    "url": "https://github.com/eriksturesson/backendError/issues"
+  },
+  "engines": {
+    "npm": "^10.0.0",
+    "node": "^22.0.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "ts-node src/test/test.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "npm": "^11.4.1",
+    "typescript": "^4.7.4"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.27"
+  }
+}
