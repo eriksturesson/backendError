@@ -5,7 +5,7 @@
 Simple logging
 
 <img alt="GitHub package.json version (master)" src="https://img.shields.io/github/package-json/v/eriksturesson/backendError/master">
-<img alt="npm" src="https://img.shields.io/npm/dy/backend-error?label=npm%20downloads">
+<img alt="npm" src="https://img.shields.io/npm/dy/@eriksturesson/backend-error?label=npm%20downloads">
 
 </center>
 
