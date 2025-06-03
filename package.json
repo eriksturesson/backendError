@@ -12,7 +12,7 @@
     "email": "hej@eriksturesson.se",
     "url": "https://eriksturesson.se"
   },
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Logger library supporting multiple cloud platforms with simple error handling.",
   "keywords": [
     "error",
