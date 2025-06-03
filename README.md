@@ -82,6 +82,42 @@ app.get("/user/:id", async (req, res, next) => {
 - `BackendError.Internal(message: string)` // 500, showUser: false
 - `BackendError.ServiceUnavailable(message: string)` // 503, showUser: false
 
+## 🧩 httpErrorFormatter(error) – Format backend errors for HTTP responses
+
+This helper takes an Error (or BackendError) and returns a plain object with:
+
+✅ status – an HTTP status code (number)
+
+✅ body – a JSON.stringify'd string representing the error (already parsed)
+
+It’s designed to be simple and universal – you can use it with any framework (Azure Functions, Express, etc).
+
+🔧 Example usage
+
+```ts
+import { BackendError, httpErrorFormatter } from "@eriksturesson/backend-error";
+
+try {
+  throw BackendError.Internal("Something went very wrong."); // 👈 your static factory pattern
+} catch (err) {
+  const { status, body } = await httpErrorFormatter(err);
+
+  return {
+    status,
+    headers: {
+      ...getCorsHeaders(request.headers.get("origin")), // Add CORS headers yourself
+    },
+    body,
+  };
+}
+```
+
+⚠️ Important
+This function does not include any HTTP headers – especially no CORS headers.
+Why? Because every environment has different CORS rules.
+
+If you're using Azure Functions, Express, or something else, you'll need to add CORS manually:
+
 ## 🧩 Types
 
 ```ts
