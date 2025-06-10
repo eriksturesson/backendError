@@ -5,14 +5,14 @@
 Simple logging
 
 <img alt="GitHub package.json version (master)" src="https://img.shields.io/github/package-json/v/eriksturesson/backendError/master">
-<img alt="npm" src="https://img.shields.io/npm/dy/@eriksturesson/backend-error?label=npm%20downloads">
+<img alt="npm" src="https://img.shields.io/npm/dy/backend-error?label=npm%20downloads">
 
 </center>
 
 ## Installation
 
 ```bash
-npm install @eriksturesson/backend-error
+npm install backend-error
 ```
 
 ## 🔥 Custom BackendError class
@@ -22,7 +22,7 @@ Use `BackendError` class for standardized backend error handling:
 ## Usage
 
 ```ts
-import { BackendError } from "@eriksturesson/backend-error";
+import { BackendError } from "backend-error";
 
 throw BackendError.BadRequest("Missing required field");
 ```
@@ -53,7 +53,7 @@ You can extend it for custom domains too.
 ## 🧠 Example: With Express + showUser handling
 
 ```ts
-import { BackendError } from "@eriksturesson/backend-error";
+import { BackendError } from "backend-error";
 
 app.get("/user/:id", async (req, res, next) => {
   try {
@@ -95,7 +95,7 @@ It’s designed to be simple and universal – you can use it with any framework
 🔧 Example usage
 
 ```ts
-import { BackendError, httpErrorFormatter } from "@eriksturesson/backend-error";
+import { BackendError, httpErrorFormatter } from "backend-error";
 
 try {
   throw BackendError.Internal("Something went very wrong."); // 👈 your static factory pattern

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.6] - 2025-06-10
+
+### Change
+
+- Changing package name from @eriksturesson/backend-error to backend-error (without @eriksturesson/)
+
 ## [0.0.5] - 2025-06-03
 
 ### Fix
