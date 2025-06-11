@@ -8,7 +8,7 @@ export async function httpErrorFormatter({
   err,
 }: {
   err: unknown;
-}): Promise<{ status: number; body: string; showUser: boolean; message: string }> {
+}): Promise<{ status: number; body: Record<string, any>; showUser: boolean; message: string }> {
   // Handle your custom BackendError type
   if (err instanceof BackendError) {
     const status = isValidStatusCode(err.code) ? err.code : 400;
@@ -20,13 +20,13 @@ export async function httpErrorFormatter({
 
     // If showUser is true, return detailed info including data, code, severity; else generic message
     const body = showUser
-      ? JSON.stringify({
+      ? {
           message,
           ...(err.data !== undefined && { data: err.data }),
           code: status,
           severity: err.severity,
-        })
-      : JSON.stringify({ message: "Internal Server Error" });
+        }
+      : { message: "Internal Server Error" };
 
     return { status, body, showUser, message };
   }
@@ -51,7 +51,7 @@ export async function httpErrorFormatter({
     showUser = true;
   }
 
-  const body = showUser ? JSON.stringify({ message }) : JSON.stringify({ message: "Internal Server Error" });
+  const body = showUser ? { message } : { message: "Internal Server Error" };
 
   return { status, body, showUser, message };
 }

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2025-06-11
+
+### Changed
+
+- `httpErrorFormatter` no longer JSON stringifies the returned `body`.  
+  Now `body` is a plain object, ready to be sent as JSON directly.
+
 ## [1.0.2] - 2025-06-11
 
 ### Changed

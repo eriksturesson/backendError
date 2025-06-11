@@ -53,8 +53,8 @@ try {
   if (!user) throw BackendError.NotFound("User not found");
   res.json(user);
 } catch (err) {
-  const { status, body } = await httpErrorFormatter(err); //returns status and body
-  res.status(status).json({ body });
+  const { status, body, message, showUser } = await httpErrorFormatter(err);
+  res.status(status).json(body);
 }
 ```
 
