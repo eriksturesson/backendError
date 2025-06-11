@@ -1,6 +1,8 @@
-export declare function httpErrorFormatter({ err }: {
+export declare function httpErrorFormatter({ err, }: {
     err: unknown;
 }): Promise<{
     status: number;
-    body: string;
+    body: Record<string, any>;
+    showUser: boolean;
+    message: string;
 }>;

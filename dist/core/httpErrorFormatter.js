@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -38,24 +49,41 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.httpErrorFormatter = void 0;
 var BackendError_1 = require("./BackendError");
+function isValidStatusCode(code) {
+    return typeof code === "number" && Number.isInteger(code) && code >= 100 && code <= 599;
+}
 function httpErrorFormatter(_a) {
     var err = _a.err;
     return __awaiter(this, void 0, void 0, function () {
-        var parsedCode, status_1, message;
+        var status_1, showUser_1, message_1, body_1, status, message, showUser, maybeStatus, body;
         return __generator(this, function (_b) {
-            if (err instanceof BackendError_1.BackendError && err.showUser) {
-                parsedCode = Number(err.code);
-                status_1 = Number.isInteger(parsedCode) ? parsedCode : 400;
-                return [2 /*return*/, {
-                        status: status_1,
-                        body: JSON.stringify(err),
-                    }];
+            // Handle your custom BackendError type
+            if (err instanceof BackendError_1.BackendError) {
+                status_1 = isValidStatusCode(err.code) ? err.code : 400;
+                showUser_1 = typeof err.showUser === "boolean" ? err.showUser : status_1 < 500;
+                message_1 = err.message || "Error";
+                body_1 = showUser_1
+                    ? __assign(__assign({ message: message_1 }, (err.data !== undefined && { data: err.data })), { code: status_1, severity: err.severity }) : { message: "Internal Server Error" };
+                return [2 /*return*/, { status: status_1, body: body_1, showUser: showUser_1, message: message_1 }];
             }
-            message = err instanceof Error ? err.message : typeof err === "string" ? err : "Internal Server Error";
-            return [2 /*return*/, {
-                    status: 500,
-                    body: JSON.stringify({ message: message }),
-                }];
+            status = 500;
+            message = "Internal Server Error";
+            showUser = false;
+            if (err instanceof Error) {
+                message = err.message;
+                maybeStatus = err.status || err.code;
+                if (isValidStatusCode(maybeStatus)) {
+                    status = maybeStatus;
+                    showUser = status < 500; // show message for 4xx errors by default
+                }
+            }
+            else if (typeof err === "string") {
+                message = err;
+                status = 400;
+                showUser = true;
+            }
+            body = showUser ? { message: message } : { message: "Internal Server Error" };
+            return [2 /*return*/, { status: status, body: body, showUser: showUser, message: message }];
         });
     });
 }

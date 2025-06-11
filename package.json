@@ -9,8 +9,8 @@
     "email": "hej@eriksturesson.se",
     "url": "https://eriksturesson.se"
   },
-  "version": "1.0.3",
-  "description": "Error library supporting multiple cloud platforms with simple error handling.",
+  "version": "1.0.4",
+  "description": "Simple Error handling library.",
   "keywords": [
     "error",
     "fail",

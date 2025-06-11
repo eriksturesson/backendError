@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2025-06-11
+
+### Fixed
+
+- Built project 1.0.3
+
 ## [1.0.3] - 2025-06-11
 
 ### Changed
