@@ -1,8 +1,5 @@
 {
   "name": "backend-error",
-  "publishConfig": {
-    "access": "public"
-  },
   "license": "MIT",
   "maintainers": [
     "Erik Sturesson"
@@ -12,7 +9,7 @@
     "email": "hej@eriksturesson.se",
     "url": "https://eriksturesson.se"
   },
-  "version": "0.0.6",
+  "version": "1.0.1",
   "description": "Logger library supporting multiple cloud platforms with simple error handling.",
   "keywords": [
     "error",
@@ -46,7 +43,6 @@
   },
   "dependencies": {
     "dotenv": "^16.5.0",
-    "npm": "^11.4.1",
     "typescript": "^4.7.4"
   },
   "exports": {

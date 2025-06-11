@@ -1,13 +1,9 @@
-<center>
-
 # Backend-error
 
-Simple logging
+BackendError is a lightweight utility for structured and user-aware error handling in Node.js backends. It helps distinguish operational errors from unexpected crashes, and supports standardized error responses across services.
 
-<img alt="GitHub package.json version (master)" src="https://img.shields.io/github/package-json/v/eriksturesson/backendError/master">
-<img alt="npm" src="https://img.shields.io/npm/dy/backend-error?label=npm%20downloads">
-
-</center>
+[![GitHub package.json version (master)](https://img.shields.io/github/package-json/v/eriksturesson/backendError/master)](https://github.com/eriksturesson/backendError)
+[![npm](https://img.shields.io/npm/dy/backend-error?label=npm%20downloads)](https://www.npmjs.com/package/backend-error)
 
 ## Installation
 
@@ -48,9 +44,21 @@ Properties available:
 - `severity`: "info" | "warning" | "error" | "critical"
 - `data`: Additional metadata (optional and anything accepted)
 
-You can extend it for custom domains too.
+## 🧠 Example where you also import `httpErrorFormatter`:
 
-## 🧠 Example: With Express + showUser handling
+```ts
+import { BackendError, httpErrorFormatter } from "backend-error";
+try {
+  const user = null;
+  if (!user) throw BackendError.NotFound("User not found");
+  res.json(user);
+} catch (err) {
+  const { status, body } = await httpErrorFormatter(err); //returns status and body
+  res.status(status).json({ body });
+}
+```
+
+## 🧠 Example of manual showUser handling (done automatically in httpErrorFormatter above)
 
 ```ts
 import { BackendError } from "backend-error";
@@ -66,7 +74,6 @@ app.get("/user/:id", async (req, res, next) => {
     } else {
       res.status(500).json({ error: "Internal Server Error" });
     }
-    next(err);
   }
 });
 ```
@@ -81,42 +88,6 @@ app.get("/user/:id", async (req, res, next) => {
 - `BackendError.UnprocessableEntity(message: string)`// 422, showUser: true
 - `BackendError.Internal(message: string)` // 500, showUser: false
 - `BackendError.ServiceUnavailable(message: string)` // 503, showUser: false
-
-## 🧩 httpErrorFormatter(error) – Format backend errors for HTTP responses
-
-This helper takes an Error (or BackendError) and returns a plain object with:
-
-✅ status – an HTTP status code (number)
-
-✅ body – a JSON.stringify'd string representing the error (already parsed)
-
-It’s designed to be simple and universal – you can use it with any framework (Azure Functions, Express, etc).
-
-🔧 Example usage
-
-```ts
-import { BackendError, httpErrorFormatter } from "backend-error";
-
-try {
-  throw BackendError.Internal("Something went very wrong."); // 👈 your static factory pattern
-} catch (err) {
-  const { status, body } = await httpErrorFormatter(err);
-
-  return {
-    status,
-    headers: {
-      ...getCorsHeaders(request.headers.get("origin")), // Add CORS headers yourself
-    },
-    body,
-  };
-}
-```
-
-⚠️ Important
-This function does not include any HTTP headers – especially no CORS headers.
-Why? Because every environment has different CORS rules.
-
-If you're using Azure Functions, Express, or something else, you'll need to add CORS manually:
 
 ## 🧩 Types
 
@@ -135,11 +106,13 @@ export interface BackendErrorOptions {
 }
 ```
 
+> 💬 Tip: This package doesn't handle headers or CORS. If you're building an API for browsers, remember to configure CORS separately.
+
 ---
 
 ## 🌐 Repo
 
-[https://github.com/eriksturesson/backendError](https://github.com/eriksturesson/cloud-logger)
+[https://github.com/eriksturesson/backendError](https://github.com/eriksturesson/backendError)
 
 ---
 

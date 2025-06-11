@@ -2,15 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2025-06-11
+
+### Changed
+
+- Improved README
+- Bumped version to 1.0.0 to mark production readiness
+- Removed `npm`from dependencies
+
 ## [0.0.6] - 2025-06-10
 
-### Change
+### Changed
 
-- Changing package name from @eriksturesson/backend-error to backend-error (without @eriksturesson/)
+- Changed package name from @eriksturesson/backend-error to backend-error (without @eriksturesson/)
 
 ## [0.0.5] - 2025-06-03
 
-### Fix
+### Fixed
 
 - Built the 0.0.4 version
 
@@ -18,18 +26,18 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
--`httpErrorFormatter` added to give body and status (but not headers) send http response
+- `httpErrorFormatter` added to give body and status (but not headers) to send http response
 
 ## [0.0.3] - 2025-06-03
 
-### Fix
+### Fixed
 
 - Readme has correct shield
 - Dist folder added
 
 ## [0.0.2] - 2025-05-30
 
-### Fix
+### Fixed
 
 - Readme is correct
 
