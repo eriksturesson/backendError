@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2025-06-11
+
+### Changed
+
+- `httpErrorFormatter` now returns `message` and `showUser` in addition to `status` and `body`.
+- When using `BackendErrorOptions` with a `data` property and `showUser` set to `true`, `httpErrorFormatter` includes the input `data` in the returned `body`.
+
 ## [1.0.1] - 2025-06-11
 
 ### Changed
