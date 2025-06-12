@@ -2,6 +2,10 @@
 
 BackendError is a lightweight utility for structured and user-aware error handling in Node.js backends. It helps distinguish operational errors from unexpected crashes, and supports standardized error responses across services.
 
+> ⚠️ Note: backend-error is not a middleware — it's a flexible utility for throwing and formatting structured errors. It works seamlessly with Express, Cloud Functions, and any other Node.js-based backend environment where you want standardized, user-aware error responses.
+
+> 💬 Tip: This package doesn't handle headers or CORS. If you're building an API for browsers, remember to configure CORS separately.
+
 [![GitHub package.json version (master)](https://img.shields.io/github/package-json/v/eriksturesson/backendError/master)](https://github.com/eriksturesson/backendError)
 [![npm](https://img.shields.io/npm/dy/backend-error?label=npm%20downloads)](https://www.npmjs.com/package/backend-error)
 
@@ -106,7 +110,32 @@ export interface BackendErrorOptions {
 }
 ```
 
-> 💬 Tip: This package doesn't handle headers or CORS. If you're building an API for browsers, remember to configure CORS separately.
+## 🎨 Works well with [error-drawings](https://www.npmjs.com/package/error-drawings)
+
+![GitHub package.json version (master)](https://img.shields.io/github/package-json/v/eriksturesson/errorDrawings/master)
+![npm downloads](https://img.shields.io/npm/dy/error-drawings?label=npm%20downloads)
+
+`npm install error-drawings`
+
+If you want fun and visual error output during development, you can combine backend-error with error-drawings. Both libraries support the same severity field ("info" | "warning" | "error" | "critical"), making them plug-and-play together.
+
+```ts
+import { BackendError } from "backend-error";
+import drawLog from "error-drawings";
+
+try {
+  throw BackendError.Forbidden("No access to resource");
+} catch (err) {
+  const isCritical = !(err instanceof BackendError && err.isOperational) || err.code >= 500;
+  if (isCritical) {
+    // 🔥 Draw dramatic error output to highlight critical issues during development
+    // 🧠 Important: log BEFORE formatting, since the formatter may hide details if showUser is false
+    drawLog(err);
+  }
+  const { status, body } = await httpErrorFormatter(err); //Use the formatter as always
+  res.status(status).json(body);
+}
+```
 
 ---
 

@@ -4,11 +4,12 @@ function isValidStatusCode(code: unknown): code is number {
   return typeof code === "number" && Number.isInteger(code) && code >= 100 && code <= 599;
 }
 
-export async function httpErrorFormatter({
-  err,
-}: {
-  err: unknown;
-}): Promise<{ status: number; body: Record<string, any>; showUser: boolean; message: string }> {
+export function httpErrorFormatter(err: unknown): {
+  status: number;
+  body: Record<string, any>;
+  showUser: boolean;
+  message: string;
+} {
   // Handle your custom BackendError type
   if (err instanceof BackendError) {
     const status = isValidStatusCode(err.code) ? err.code : 400;
