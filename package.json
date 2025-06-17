@@ -1,6 +1,21 @@
 {
+  "version": "1.1.1",
   "name": "backend-error",
   "license": "MIT",
+  "keywords": [
+    "error",
+    "error-handler",
+    "http-errors",
+    "express",
+    "firebase-functions",
+    "nodejs",
+    "api",
+    "backend",
+    "error-handling",
+    "http-status",
+    "custom-error",
+    "structured-error"
+  ],
   "maintainers": [
     "Erik Sturesson"
   ],
@@ -9,17 +24,7 @@
     "email": "hej@eriksturesson.se",
     "url": "https://eriksturesson.se"
   },
-  "version": "1.1.0",
   "description": "Simple Error handling library.",
-  "keywords": [
-    "error",
-    "fail",
-    "drawing",
-    "drawings",
-    "summarized",
-    "help",
-    "fun"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/eriksturesson/backendError"

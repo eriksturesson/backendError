@@ -1,37 +1,58 @@
-# Backend-error
+# backend-error
 
-BackendError is a lightweight utility for structured and user-aware error handling in Node.js backends. It helps distinguish operational errors from unexpected crashes, and supports standardized error responses across services.
+![npm](https://img.shields.io/npm/v/backend-error)
+![downloads](https://img.shields.io/npm/dm/backend-error)
+![license](https://img.shields.io/npm/l/backend-error)
 
-> ⚠️ Note: backend-error is not a middleware — it's a flexible utility for throwing and formatting structured errors. It works seamlessly with Express, Cloud Functions, and any other Node.js-based backend environment where you want standardized, user-aware error responses.
+`backend-error` is a lightweight Node.js / TypeScript utility that formats all errors—custom or native—into standardized HTTP responses with correct status codes and user-friendly messages. The `httpErrorFormatter` ensures secure, consistent error output by controlling what is exposed to the frontend.
 
-> 💬 Tip: This package doesn't handle headers or CORS. If you're building an API for browsers, remember to configure CORS separately.
+---
 
-[![GitHub package.json version (master)](https://img.shields.io/github/package-json/v/eriksturesson/backendError/master)](https://github.com/eriksturesson/backendError)
-[![npm](https://img.shields.io/npm/dy/backend-error?label=npm%20downloads)](https://www.npmjs.com/package/backend-error)
-
-## Installation
+## 📦 Installation
 
 ```bash
 npm install backend-error
 ```
 
-## 🔥 Custom BackendError class
+---
 
-Use `BackendError` class for standardized backend error handling:
-
-## Usage
+## 🚀 Throw `BackendError`, catch with `httpErrorFormatter`
 
 ```ts
-import { BackendError } from "backend-error";
+import { BackendError, httpErrorFormatter } from "backend-error";
 
-throw BackendError.BadRequest("Missing required field");
+app.post("/signup", async (req, res) => {
+  try {
+    const auth = req.headers.authorization;
+    const { email, id } = req.body;
+    if (!auth) throw BackendError.Unauthorized("Missing auth token"); // 401, showUser:true
+    if (!email) throw BackendError.BadRequest("Email is required"); // 400, showUser:true
+    const user = await getUser(req.params.id);
+    if (!user) throw BackendError.NotFound("User not found"); // 404, showUser:true
+
+    // Normal logic...
+  } catch (err) {
+    const { status, body } = httpErrorFormatter(err); // Handles BackendError and native Error safely
+    res.status(status).json(body);
+  }
+});
 ```
 
-Or construct it manually for full control:
+✅ No manual showUser checks — handled automatically by the formatter  
+✅ Returns generic 500 for critical or unknown errors (or if `showUser` is false)  
+✅ Formatter supports both BackendError instances and native Error objects
+
+> The httpErrorFormatter inspects any error, formats it consistently, and decides what message is safe to show to users.
+
+---
+
+## ✨ Custom BackendError creation
+
+If you prefer, create your own error with full control including custom metadata:
 
 ```ts
 const error = new BackendError({
-  message: "Something went terribly wrong",
+  message: "Something went wrong",
   severity: "critical",
   showUser: true,
   code: 500,
@@ -39,35 +60,37 @@ const error = new BackendError({
 });
 ```
 
-Properties available:
+### Selected BackendError options
 
-- `message`: The error message
+- `message`: Error message
 - `code`: HTTP status code
-- `isOperational`: Marks it as a handled error (vs. crash)
-- `showUser`: Whether frontend should show the message
+- `showUser`: Whether to expose the message to frontend clients
 - `severity`: "info" | "warning" | "error" | "critical"
-- `data`: Additional metadata (optional and anything accepted)
+- `data`: Optional metadata
 
-## 🧠 Example where you also import `httpErrorFormatter`:
+---
+
+## ⚙️ Static error helpers
 
 ```ts
-import { BackendError, httpErrorFormatter } from "backend-error";
-try {
-  const user = null;
-  if (!user) throw BackendError.NotFound("User not found");
-  res.json(user);
-} catch (err) {
-  const { status, body, message, showUser } = await httpErrorFormatter(err);
-  res.status(status).json(body);
-}
+BackendError.BadRequest("..."); // 400, showUser: true
+BackendError.Unauthorized("..."); // 401, showUser: true
+BackendError.Forbidden("..."); // 403, showUser: true
+BackendError.NotFound("..."); // 404, showUser: true
+BackendError.Conflict("..."); // 409, showUser: true
+BackendError.UnprocessableEntity("..."); // 422, showUser: true
+BackendError.Internal("..."); // 500, showUser: false
+BackendError.ServiceUnavailable("..."); // 503, showUser: false
 ```
 
-## 🧠 Example of manual showUser handling (done automatically in httpErrorFormatter above)
+---
+
+## 🧠 Manual error handling (if not using `httpErrorFormatter`)
 
 ```ts
 import { BackendError } from "backend-error";
 
-app.get("/user/:id", async (req, res, next) => {
+app.get("/user/:id", async (req, res) => {
   try {
     const user = null;
     if (!user) throw BackendError.NotFound("User not found");
@@ -82,24 +105,13 @@ app.get("/user/:id", async (req, res, next) => {
 });
 ```
 
-## Available static error constructors
-
-- `BackendError.BadRequest(message: string)` // 400, showUser: true
-- `BackendError.Unauthorized(message: string)` // 401, showUser: true
-- `BackendError.Forbidden(message: string)` // 403, showUser: true
-- `BackendError.NotFound(message: string)` // 404, showUser: true
-- `BackendError.Conflict(message: string)` // 409, showUser: true
-- `BackendError.UnprocessableEntity(message: string)`// 422, showUser: true
-- `BackendError.Internal(message: string)` // 500, showUser: false
-- `BackendError.ServiceUnavailable(message: string)` // 503, showUser: false
+---
 
 ## 🧩 Types
 
 ```ts
 export type Severity = "info" | "warning" | "error" | "critical";
-```
 
-```ts
 export interface BackendErrorOptions {
   message: string;
   isOperational?: boolean;
@@ -110,29 +122,30 @@ export interface BackendErrorOptions {
 }
 ```
 
+---
+
 ## 🎨 Works well with [error-drawings](https://www.npmjs.com/package/error-drawings)
 
 ![GitHub package.json version (master)](https://img.shields.io/github/package-json/v/eriksturesson/errorDrawings/master)
 ![npm downloads](https://img.shields.io/npm/dy/error-drawings?label=npm%20downloads)
 
-`npm install error-drawings`
+```bash
+npm install error-drawings
+```
 
-If you want fun and visual error output during development, you can combine backend-error with error-drawings. Both libraries support the same severity field ("info" | "warning" | "error" | "critical"), making them plug-and-play together.
+Use for dev-friendly terminal logs — with a bit of dramatic flair for critical errors:
 
 ```ts
-import { BackendError } from "backend-error";
+import { BackendError, httpErrorFormatter } from "backend-error";
 import drawLog from "error-drawings";
 
 try {
   throw BackendError.Forbidden("No access to resource");
 } catch (err) {
   const isCritical = !(err instanceof BackendError && err.isOperational) || err.code >= 500;
-  if (isCritical) {
-    // 🔥 Draw dramatic error output to highlight critical issues during development
-    // 🧠 Important: log BEFORE formatting, since the formatter may hide details if showUser is false
-    drawLog(err);
-  }
-  const { status, body } = await httpErrorFormatter(err); //Use the formatter as always
+  if (isCritical) drawLog(err); // Dramatic terminal art for critical errors!
+
+  const { status, body } = httpErrorFormatter(err);
   res.status(status).json(body);
 }
 ```
@@ -141,8 +154,6 @@ try {
 
 ## 🌐 Repo
 
-[https://github.com/eriksturesson/backendError](https://github.com/eriksturesson/backendError)
-
----
+[GitHub](https://github.com/eriksturesson/backendError)
 
 Created by [@eriksturesson](https://eriksturesson.se)
