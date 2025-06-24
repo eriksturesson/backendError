@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2] - 2025-06-24
+
+### Changed
+
+- The engines in package.json was to strict, only `"node": ">=16"` needed.
+
 ## [1.1.1] - 2025-06-17
 
 ### Changed
