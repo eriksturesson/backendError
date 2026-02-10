@@ -81,6 +81,23 @@ BackendError.Conflict("..."); // 409, showUser: true
 BackendError.UnprocessableEntity("..."); // 422, showUser: true
 BackendError.Internal("..."); // 500, showUser: false
 BackendError.ServiceUnavailable("..."); // 503, showUser: false
+BackendError.ExternalAPI("..."); // 502 (default), showUser: true
+```
+
+### External / upstream errors
+
+Use `ExternalAPI` for failures originating from upstream services (Stripe, bank APIs, HR systems etc). It defaults to HTTP `502 Bad Gateway`, `showUser: true` (so the user gets a helpful message), and `severity: "warning"`.
+
+Example:
+
+```ts
+try {
+  // call an external API
+  await chargeCard();
+} catch (err) {
+  // Indicate the error came from an external API — user can be informed
+  throw BackendError.ExternalAPI("Payment provider unavailable"); // 502, showUser: true
+}
 ```
 
 ---
@@ -108,6 +125,14 @@ app.get("/user/:id", async (req, res) => {
 ---
 
 ## 🧩 Types
+
+The package re-exports TypeScript types so you get full typings when consuming the package. Import types like this:
+
+```ts
+import type { BackendErrorOptions, Severity } from "backend-error";
+```
+
+For reference, the exported types look like:
 
 ```ts
 export type Severity = "info" | "warning" | "error" | "critical";
