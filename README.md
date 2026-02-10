@@ -81,7 +81,7 @@ BackendError.Conflict("..."); // 409, showUser: true
 BackendError.UnprocessableEntity("..."); // 422, showUser: true
 BackendError.Internal("..."); // 500, showUser: false
 BackendError.ServiceUnavailable("..."); // 503, showUser: false
-BackendError.ExternalAPI("..."); // 502 (default), showUser: true
+BackendError.ExternalAPI("..."); // 502, showUser: true
 ```
 
 ### External / upstream errors
