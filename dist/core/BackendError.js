@@ -1,60 +1,45 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BackendError = void 0;
-var BackendError = /** @class */ (function (_super) {
-    __extends(BackendError, _super);
-    function BackendError(options) {
-        var _this = this;
+class BackendError extends Error {
+    constructor(options) {
         var _a, _b, _c;
-        _this = _super.call(this, options.message) || this;
-        _this.name = "BackendError";
-        _this.isOperational = (_a = options.isOperational) !== null && _a !== void 0 ? _a : true;
-        _this.showUser = (_b = options.showUser) !== null && _b !== void 0 ? _b : true;
-        _this.severity = (_c = options.severity) !== null && _c !== void 0 ? _c : "error";
-        _this.code = options.code;
-        _this.data = options.data;
-        Object.setPrototypeOf(_this, BackendError.prototype);
-        return _this;
+        super(options.message);
+        this.name = "BackendError";
+        this.isOperational = (_a = options.isOperational) !== null && _a !== void 0 ? _a : true;
+        this.showUser = (_b = options.showUser) !== null && _b !== void 0 ? _b : true;
+        this.severity = (_c = options.severity) !== null && _c !== void 0 ? _c : "error";
+        this.code = options.code;
+        this.data = options.data;
+        Object.setPrototypeOf(this, BackendError.prototype);
     }
-    BackendError.BadRequest = function (msg) {
+    static BadRequest(msg) {
         return new BackendError({ message: msg, code: 400, severity: "warning", showUser: true });
-    };
-    BackendError.Unauthorized = function (msg) {
+    }
+    static Unauthorized(msg) {
         return new BackendError({ message: msg, code: 401, severity: "warning", showUser: true });
-    };
-    BackendError.Forbidden = function (msg) {
+    }
+    static Forbidden(msg) {
         return new BackendError({ message: msg, code: 403, severity: "warning", showUser: true });
-    };
-    BackendError.NotFound = function (msg) {
+    }
+    static NotFound(msg) {
         return new BackendError({ message: msg, code: 404, severity: "warning", showUser: true });
-    };
-    BackendError.Conflict = function (msg) {
+    }
+    static Conflict(msg) {
         return new BackendError({ message: msg, code: 409, severity: "warning", showUser: true });
-    };
-    BackendError.UnprocessableEntity = function (msg) {
+    }
+    static UnprocessableEntity(msg) {
         return new BackendError({ message: msg, code: 422, severity: "warning", showUser: true });
-    };
-    BackendError.Internal = function (msg) {
+    }
+    static Internal(msg) {
         return new BackendError({ message: msg, code: 500, severity: "critical", showUser: false });
-    };
-    BackendError.ServiceUnavailable = function (msg) {
+    }
+    static ExternalAPI(msg, code = 502) {
+        return new BackendError({ message: msg, code, severity: "warning", showUser: true });
+    }
+    static ServiceUnavailable(msg) {
         return new BackendError({ message: msg, code: 503, severity: "critical", showUser: false });
-    };
-    return BackendError;
-}(Error));
+    }
+}
 exports.BackendError = BackendError;
+//# sourceMappingURL=BackendError.js.map

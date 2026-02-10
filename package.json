@@ -27,7 +27,7 @@
   "description": "Simple Error handling library.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eriksturesson/backendError"
+    "url": "git+https://github.com/eriksturesson/backendError.git"
   },
   "bugs": {
     "email": "hej@eriksturesson.se",
