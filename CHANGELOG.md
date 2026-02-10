@@ -8,6 +8,14 @@ All notable changes to this project will be documented in this file.
 
 - Added `ExternalAPI` helper on `BackendError` for upstream/external service errors (default `502 Bad Gateway`, `showUser: true`, `severity: "warning").
 
+## [1.2.1] - 2026-02-10
+
+### Docs
+
+- Documentation: small README updates (ExternalAPI example, clarify exported types).
+
+## [1.2.0] - 2026-02-10
+
 ## [1.1.3] - 2026-02-10
 
 ### Fixed
