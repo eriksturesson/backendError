@@ -48,6 +48,10 @@ export class BackendError extends Error {
     return new BackendError({ message: msg, code: 500, severity: "critical", showUser: false });
   }
 
+  static ExternalAPI(msg: string, code: number = 502) {
+    return new BackendError({ message: msg, code, severity: "warning", showUser: true });
+  }
+
   static ServiceUnavailable(msg: string) {
     return new BackendError({ message: msg, code: 503, severity: "critical", showUser: false });
   }
