@@ -2,11 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.2.0] - 2026-02-10
+## [1.2.2] - 2026-02-12
 
 ### Added
 
-- Added `ExternalAPI` helper on `BackendError` for upstream/external service errors (default `502 Bad Gateway`, `showUser: true`, `severity: "warning").
+- `FailedDependency` helper on `BackendError` for multi-step/dependent failures (HTTP `424`, `showUser: true`, `severity: "warning"`).
+- `InsufficientStorage` helper for storage-related server errors (HTTP `507`, `showUser: false`, `severity: "critical"`).
+- `NotImplemented` helper for unimplemented API functionality (HTTP `501`, `showUser: true`, `severity: "error"`).
+- `GatewayTimeout` helper for upstream timeouts (HTTP `504`, `showUser: false`, `severity: "critical"`).
+
+### Fixed
+
+- Emit TypeScript declarations into `dist` to ensure published typings match the compiled `dist` output.
+
+### Changed
+
+- ExternalAPI default severity changed to `"critical"` (was `"warning"`).
 
 ## [1.2.1] - 2026-02-10
 
@@ -15,6 +26,10 @@ All notable changes to this project will be documented in this file.
 - Documentation: small README updates (ExternalAPI example, clarify exported types).
 
 ## [1.2.0] - 2026-02-10
+
+### Added
+
+- Added `ExternalAPI` helper on `BackendError` for upstream/external service errors (default `502 Bad Gateway`, `showUser: true`, `severity: "warning").
 
 ## [1.1.3] - 2026-02-10
 

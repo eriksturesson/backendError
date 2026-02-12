@@ -4,3 +4,4 @@ export declare function httpErrorFormatter(err: unknown): {
     showUser: boolean;
     message: string;
 };
+//# sourceMappingURL=httpErrorFormatter.d.ts.map

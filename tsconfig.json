@@ -7,7 +7,7 @@
     "rootDir": "./src",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "./dist/types",
+    "declarationDir": "./dist",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",

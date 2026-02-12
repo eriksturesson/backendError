@@ -12,6 +12,12 @@ export declare class BackendError extends Error {
     static NotFound(msg: string): BackendError;
     static Conflict(msg: string): BackendError;
     static UnprocessableEntity(msg: string): BackendError;
+    static FailedDependency(msg: string): BackendError;
     static Internal(msg: string): BackendError;
+    static NotImplemented(msg: string): BackendError;
+    static ExternalAPI(msg: string, code?: number): BackendError;
     static ServiceUnavailable(msg: string): BackendError;
+    static GatewayTimeout(msg: string): BackendError;
+    static InsufficientStorage(msg: string): BackendError;
 }
+//# sourceMappingURL=BackendError.d.ts.map

@@ -72,6 +72,8 @@ const error = new BackendError({
 
 ## ⚙️ Static error helpers
 
+Available helpers (status, showUser, severity):
+
 ```ts
 BackendError.BadRequest("..."); // 400, showUser: true
 BackendError.Unauthorized("..."); // 401, showUser: true
@@ -79,14 +81,23 @@ BackendError.Forbidden("..."); // 403, showUser: true
 BackendError.NotFound("..."); // 404, showUser: true
 BackendError.Conflict("..."); // 409, showUser: true
 BackendError.UnprocessableEntity("..."); // 422, showUser: true
+BackendError.FailedDependency("..."); // 424, showUser: true
 BackendError.Internal("..."); // 500, showUser: false
-BackendError.ServiceUnavailable("..."); // 503, showUser: false
+BackendError.NotImplemented("..."); // 501, showUser: true
 BackendError.ExternalAPI("..."); // 502, showUser: true
+BackendError.ServiceUnavailable("..."); // 503, showUser: false
+BackendError.GatewayTimeout("..."); // 504, showUser: false
+BackendError.InsufficientStorage("..."); // 507, showUser: false
 ```
+
+Notes:
+
+- 4xx helpers generally have `showUser: true` so clients get actionable messages.
+- 5xx helpers are usually `showUser: false` to avoid leaking internals, except `NotImplemented` and `ExternalAPI` which intentionally expose helpful client-facing messages.
 
 ### External / upstream errors
 
-Use `ExternalAPI` for failures originating from upstream services (Stripe, bank APIs, HR systems etc). It defaults to HTTP `502 Bad Gateway`, `showUser: true` (so the user gets a helpful message), and `severity: "warning"`.
+Use `ExternalAPI` for failures originating from upstream services (Stripe, bank APIs, HR systems etc). It defaults to HTTP `502 Bad Gateway`, `showUser: true` (so the user gets a helpful message), and `severity: "critical"`.
 
 Example:
 
